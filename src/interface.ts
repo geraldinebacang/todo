@@ -1,6 +1,7 @@
 interface TodoItem {
   label: string;
   description: string;
+  checked: false;
 }
 
-export default TodoItem
+export default TodoItem;

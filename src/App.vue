@@ -1,24 +1,46 @@
 <template>
-  <v-app class="padding">
-    <v-card
-      v-for="todo in todoList"
-      :key="todo.label"
-      elevation="2"
-      class="margin-bottom padding"
-    >
-      <div>{{ todo.label }}</div>
-      <div>{{ todo.description }}</div>
-    </v-card>
-    <div class="add-btn">
-      <v-text-field
-        v-model="itemLabel"
-        label="Todo Item"
-        class="margin-right"
-      ></v-text-field>
-      <v-btn @click="addItem">
-        Add
-      </v-btn>
-    </div>
+  <v-app>
+    <v-container class="pa-12">
+      <div class="mb-4 text-body">
+        You have {{ todoList.length }} todo items
+      </div>
+      <v-row>
+        <v-col class="flex-grow-1 mb-7">
+          <v-card
+            v-for="todo in todoList"
+            :key="todo.label"
+            elevation="2"
+            class="pa-6 mb-4"
+          >
+            <v-checkbox v-model="todo.checked">
+              <template slot="label">
+                <div class="pl-4">
+                  <div class="text-h6">{{ todo.label }}</div>
+                  <div>{{ todo.description }}</div>
+                </div>
+              </template>
+            </v-checkbox>
+          </v-card>
+        </v-col>
+        <v-col class="mb-5">
+          <v-card class="add-btn ml-6 pa-6">
+            <v-text-field
+              v-model="itemLabel"
+              label="Item"
+              class="margin-right"
+            ></v-text-field>
+            <v-text-field
+              v-model="itemDescription"
+              label="Description"
+              class="margin-right"
+            ></v-text-field>
+            <v-btn @click="addItem" block color="primary">
+              Add todo
+            </v-btn>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-app>
 </template>
 
@@ -33,20 +55,26 @@ export default defineComponent({
       {
         label: "Todo1",
         description: "todo description",
+        checked: false,
       },
       {
         label: "Todo2",
         description: "todo description",
+        checked: false,
       },
     ];
 
     const itemLabel = ref("");
+    const itemDescription = ref("");
 
     const addItem = () => {
-      todoList.value.push({
-        label: itemLabel.value,
-        description: "",
-      });
+      if (itemLabel.value) {
+        todoList.value.push({
+          label: itemLabel.value,
+          description: itemDescription.value,
+          checked: false,
+        });
+      }
     };
 
     return {
